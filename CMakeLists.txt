@@ -2,15 +2,15 @@ cmake_minimum_required(VERSION 2.6)
 project(mtk)
 
 add_definitions(-Wall -Wno-unused-function -march=native -msse2 -mssse3 -mfpmath=sse)
-option(SLOM_BUILD_EXAMPLES "Build the example code" OFF)
+option(SLOM_BUILD_EXAMPLES "Build the example code" ON)
 if (SLOM_BUILD_LIBONLY)
     set(SLOM_BUILD_EXAMPLES OFF)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake_modules)
 
+FIND_PACKAGE(Boost 1.36.0 REQUIRED)
 FIND_PACKAGE(CXSparse REQUIRED) 
-FIND_PACKAGE(LAPACK)
 find_package(PkgConfig)
 pkg_check_modules(Eigen3 REQUIRED eigen3)
 
@@ -64,14 +64,12 @@ INSTALL(FILES
     DESTINATION include/ukfom)
 
 INSTALL(FILES
-    ukfom/lapack/cholesky.hpp
-    ukfom/lapack/invert.hpp
-    ukfom/lapack/lapack.h
-    DESTINATION include/ukfom/lapack)
-
-INSTALL(FILES
     ukfom/traits/dof.hpp
     DESTINATION include/ukfom/traits)
 
 install(TARGETS slom
     DESTINATION lib)
+
+SET(PKG_CONFIG_EXPORT_LIBS "-lslom")
+configure_file(mtk.pc.in mtk.pc @ONLY)
+install(FILES ${CMAKE_BINARY_DIR}/mtk.pc DESTINATION lib/pkgconfig)
