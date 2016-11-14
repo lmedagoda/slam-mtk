@@ -167,7 +167,16 @@ public:
 			apply_delta(K * innovation);
 		}
 	}
-
+	
+	void reset_state(unsigned int state_num, scalar_type new_var, scalar_type new_val)
+	{	 
+		sigma_.row(state_num) = 0 * sigma_.row(state_num);
+		sigma_.col(state_num) = 0 * sigma_.col(state_num);
+		sigma_(state_num,state_num) = new_var;		
+		
+		//mu_(state_num) = new_val; 
+	}
+	
 	const state &mu() const
 	{
 		return mu_;
