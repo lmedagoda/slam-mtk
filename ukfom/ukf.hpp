@@ -174,7 +174,7 @@ public:
 		sigma_.col(state_num) = 0 * sigma_.col(state_num);
 		sigma_(state_num,state_num) = new_var;		
 		
-		//mu_(state_num) = new_val; 
+		mu_(state_num) = new_val; 
 	}
 	
 	const state &mu() const
